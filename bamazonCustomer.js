@@ -12,7 +12,7 @@ var connection = mysql.createConnection({
 connection.connect(function (err) {
     if (err) throw err
     console.log("        ______                                             \n        | ___ \\                                            \n        | |_/ /  __ _  _ __ ___    __ _  ____  ___   _ __  \n        | ___ \\ / _` || '_ ` _ \\  / _` ||_  / / _ \\ | '_ \\ \n        | |_/ /| (_| || | | | | || (_| | / / | (_) || | | |\n        \\____/  \\__,_||_| |_| |_| \\__,_|/___| \\___/ |_| |_|\n        ");
-    start()
+    start();
 })
 
 function start() {
@@ -53,9 +53,25 @@ function start() {
                 var itemData = data[0];
 
                 if (count <= itemData.stock_quantity) {
-                    console.log('Your order has been placed! Estimated delivery time is 5 months.\n');
+                    console.log('Your order is being processed!\n');
+
+                    var updateSql = 'UPDATE products SET stock_quantity = ' + (itemData.stock_quantity - count) + ' WHERE item_id = ' + item;
+
+                    connection.query(updateSql, function (err, data) {
+                        if (err) throw err;
+                        console.log('Your order has been placed! Your total is $' + itemData.price * count + '! Estimated time for delivery is 5 months!');
+                        console.log('Have a fantastic day!')
+                        console.log('\n=================================================\n')
+                        inventory();
+                    })
+                } else {
+                    console.log('Uh oh, there is insufficient quantity!!');
+                    console.log('Please come back another day!');
+                    console.log('\n=================================================\n');
                     inventory();
                 }
+                // connection.end();
+
             }
 
             function inventory() {
@@ -76,25 +92,38 @@ function start() {
 
                         console.log(invent);
                     }
-                    restart();
+                    connection.end();
+                    // restart();
                 })
             }
-            
-        })   
+
+        })
     })
+    // function display() {
+    //     inventory();
+    // }
+
+    // display();
 }
-function restart() {
-    inquirer.prompt([
-        {
-            type: 'confirm',
-            name: 'item_id',
-            message: 'Would you like to order another item?',
-            }
-    ]).then(function (answers) {
-        if (answers === 'Yes') {
-            start();
-        } else if (answers === 'No') {
-            connection.end();
-        }
-    })
-}
+
+
+// function restart(start) {
+//     inquirer.prompt([
+//         {
+//             type: 'confirm',
+//             name: 'restart',
+//             message: 'Would you like to order another item?',
+//             default: true
+//         }
+//     ]).then(function (answers) {
+//         if (answers === true) {
+//             connection.connect(function (err) {
+//                 if (err) throw err
+//                 console.log("        ______                                             \n        | ___ \\                                            \n        | |_/ /  __ _  _ __ ___    __ _  ____  ___   _ __  \n        | ___ \\ / _` || '_ ` _ \\  / _` ||_  / / _ \\ | '_ \\ \n        | |_/ /| (_| || | | | | || (_| | / / | (_) || | | |\n        \\____/  \\__,_||_| |_| |_| \\__,_|/___| \\___/ |_| |_|\n        ");
+//                 start();
+//             })
+//         } else if (answers === false) {
+//             connection.end();
+//         }
+//     })
+// }
