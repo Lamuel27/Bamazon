@@ -9,9 +9,34 @@ var connection = mysql.createConnection({
     database: 'bamazon'
 })
 
+function inventory() {
+
+    connection.query('SELECT * FROM products', function (err, data) {
+        if (err) throw err;
+
+        console.log('Inventory: ');
+        console.log('-----------------\n');
+        var invent = '';
+        for (var i = 0; i < data.length; i++) {
+            invent = '';
+            invent += 'Item ID: ' + data[i].item_id + ' | ';
+            invent += 'Product Name: ' + data[i].product_name + ' | ';
+            invent += 'Department: ' + data[i].department_name + ' | ';
+            invent += 'Price: $' + data[i].price + ' | ';
+            invent += 'Quantity: ' + data[i].stock_quantity + ' units\n';
+
+            console.log(invent);
+        }
+        // connection.end();
+        // restart();
+    })
+}
+
 connection.connect(function (err) {
     if (err) throw err
     console.log("        ______                                             \n        | ___ \\                                            \n        | |_/ /  __ _  _ __ ___    __ _  ____  ___   _ __  \n        | ___ \\ / _` || '_ ` _ \\  / _` ||_  / / _ \\ | '_ \\ \n        | |_/ /| (_| || | | | | || (_| | / / | (_) || | | |\n        \\____/  \\__,_||_| |_| |_| \\__,_|/___| \\___/ |_| |_|\n        ");
+    inventory();
+    console.log('\n=================================================\n')
     start();
 })
 
@@ -63,67 +88,36 @@ function start() {
                         console.log('Have a fantastic day!')
                         console.log('\n=================================================\n')
                         inventory();
+                        restart();
                     })
                 } else {
                     console.log('Uh oh, there is insufficient quantity!!');
                     console.log('Please come back another day!');
                     console.log('\n=================================================\n');
                     inventory();
+                    restart();
                 }
-                // connection.end();
 
             }
 
-            function inventory() {
-
-                connection.query('SELECT * FROM products', function (err, data) {
-                    if (err) throw err;
-
-                    console.log('Inventory: ');
-                    console.log('-----------------\n');
-                    var invent = '';
-                    for (var i = 0; i < data.length; i++) {
-                        invent = '';
-                        invent += 'Item ID: ' + data[i].item_id + ' | ';
-                        invent += 'Product Name: ' + data[i].product_name + ' | ';
-                        invent += 'Department: ' + data[i].department_name + ' | ';
-                        invent += 'Price: $' + data[i].price + ' | ';
-                        invent += 'Quantity: ' + data[i].stock_quantity + ' units\n';
-
-                        console.log(invent);
-                    }
-                    connection.end();
-                    // restart();
-                })
-            }
 
         })
     })
-    // function display() {
-    //     inventory();
-    // }
-
-    // display();
+    
 }
 
-
-// function restart(start) {
-//     inquirer.prompt([
-//         {
-//             type: 'confirm',
-//             name: 'restart',
-//             message: 'Would you like to order another item?',
-//             default: true
-//         }
-//     ]).then(function (answers) {
-//         if (answers === true) {
-//             connection.connect(function (err) {
-//                 if (err) throw err
-//                 console.log("        ______                                             \n        | ___ \\                                            \n        | |_/ /  __ _  _ __ ___    __ _  ____  ___   _ __  \n        | ___ \\ / _` || '_ ` _ \\  / _` ||_  / / _ \\ | '_ \\ \n        | |_/ /| (_| || | | | | || (_| | / / | (_) || | | |\n        \\____/  \\__,_||_| |_| |_| \\__,_|/___| \\___/ |_| |_|\n        ");
-//                 start();
-//             })
-//         } else if (answers === false) {
-//             connection.end();
-//         }
-//     })
-// }
+function restart(){
+	inquirer.prompt([{
+		type: 'confirm',
+		name: 'choice',
+		message: 'Would you like to order another item?'
+	}]).then(function(answer){
+		if(answer.choice){
+			start();
+		}
+		else{
+			console.log('FINE! BE THAT WAY!');
+			connection.end();
+		}
+	})
+};
