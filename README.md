@@ -4,7 +4,7 @@ Welcome to Bamazon! In this assignment I created workflows for both the manager 
 
 ## Getting Started
 
-Clone and Type the following commands within your command prompt:
+Clone and Type the following commands within your command prompt to see how both a customer and manager would interact with the app:
 
 node bamazonCustomer.js
 
@@ -12,7 +12,7 @@ node bamazonManager.js
 
 Here is a video showing a demo of the Liri application!
 
-[![Watch the video](http://www.davidlaidlaw.com/img/portfolio/liri_thumbnail.jpg)](https://www.youtube.com/watch?v=VK5kSVtBiVY&feature=youtu.be)
+[![Watch the video](http://www.rickmeaney.com/pics/bamazon_THMB-01.jpg)](https://youtu.be/Ucl208_IDQw)
 
 ## Built With
 
