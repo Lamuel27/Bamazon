@@ -14,7 +14,7 @@ function inventory() {
     connection.query('SELECT * FROM products', function (err, data) {
         if (err) throw err;
 
-        console.log('Inventory: ');
+        console.log('\nInventory: ');
         console.log('-----------------\n');
         var invent = '';
         for (var i = 0; i < data.length; i++) {
@@ -32,10 +32,31 @@ function inventory() {
     })
 }
 
+function inventory1() {
+
+    connection.query('SELECT * FROM products', function (err, data) {
+        if (err) throw err;
+
+        console.log('\nInventory: ');
+        console.log('-----------------\n');
+        var invent = '';
+        for (var i = 0; i < data.length; i++) {
+            invent = '';
+            invent += 'Item ID: ' + data[i].item_id + '\n';
+            invent += 'Product Name: ' + data[i].product_name + '\n';
+            invent += 'Price: $' + data[i].price + '\n';
+
+            console.log(invent);
+        }
+        // connection.end();
+        // restart();
+    })
+}
+
 connection.connect(function (err) {
     if (err) throw err
     console.log("        ______                                             \n        | ___ \\                                            \n        | |_/ /  __ _  _ __ ___    __ _  ____  ___   _ __  \n        | ___ \\ / _` || '_ ` _ \\  / _` ||_  / / _ \\ | '_ \\ \n        | |_/ /| (_| || | | | | || (_| | / / | (_) || | | |\n        \\____/  \\__,_||_| |_| |_| \\__,_|/___| \\___/ |_| |_|\n        ");
-    inventory();
+    inventory1();
     console.log('\n=================================================\n')
     start();
 })
