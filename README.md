@@ -10,7 +10,7 @@ node bamazonCustomer.js
 
 node bamazonManager.js
 
-Here is a video showing a demo of the Liri application!
+Here is a video showing a demo of the Bamazon application!
 
 [![Watch the video](http://www.rickmeaney.com/pics/bamazon_THMB-01.jpg)](https://youtu.be/Ucl208_IDQw)
 
